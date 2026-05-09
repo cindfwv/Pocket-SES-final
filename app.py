@@ -5,7 +5,7 @@ import google.generativeai as genai
 # Устанавливаем иконку и широкую верстку
 st.set_page_config(
     page_title="Pocket-СЭС | AI-Nutrition",
-    page_icon="🧬",
+    page_icon="🍏",
     layout="wide"
 )
 
