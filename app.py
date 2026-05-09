@@ -87,8 +87,7 @@ with st.sidebar:
     check_eco = st.checkbox("🌱 Оценить эко-след и упаковку (ЦУР)")
 # --- КОНЕЦ БОКОВОГО МЕНЮ ---
 
-# === НАСТРОЙКА СТРАНИЦЫ ===
-st.set_page_config(page_title="Pocket-СЭС", page_icon="🍏", layout="centered")
+
 
 # === БОКОВАЯ ПАНЕЛЬ (НАСТРОЙКИ И АВТОПОИСК МОДЕЛЕЙ) ===
 with st.sidebar:
