@@ -85,29 +85,50 @@ st.set_page_config(page_title="Pocket-СЭС", page_icon="🍏", layout="centere
 # === БОКОВАЯ ПАНЕЛЬ (НАСТРОЙКИ И АВТОПОИСК МОДЕЛЕЙ) ===
 with st.sidebar:
     st.header("⚙️ Настройки")
-    api_key = st.text_input("Введите API-ключ Gemini:", type="password")
+    
+    # 1. Сначала пытаемся взять ключ из секретов Streamlit Cloud
+    # 2. Если его там нет, поле останется пустым
+    secret_key = st.secrets.get("GEMINI_API_KEY", "")
+    
+    api_key = st.text_input(
+        "Введите API-ключ Gemini:", 
+        value=secret_key, 
+        type="password",
+        help="Для жюри ключ уже вшит в систему."
+    )
+    
     st.markdown("[Получить ключ здесь](https://aistudio.google.com/app/apikey)")
     
     selected_model_name = None
     
-    # Как только ключ введен, ищем доступные модели!
+    # Как только ключ получен (из секретов или введен вручную), ищем модели
     if api_key:
         try:
             genai.configure(api_key=api_key)
-            # Запрашиваем у Google все модели, которые умеют генерировать контент
             available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
             
             if available_models:
-                st.success("✅ Ключ работает!")
-                # Даем пользователю выбрать модель из списка
-                selected_model_name = st.selectbox("🧠 Выберите модель ИИ:", available_models)
+                # Находим самую мощную модель в списке (flash или pro), чтобы не выбирать вручную
+                # Обычно это 'models/gemini-1.5-flash' или 'models/gemini-1.5-pro'
+                default_index = 0
+                for i, m in enumerate(available_models):
+                    if "flash" in m:
+                        default_index = i
+                        break
+                
+                selected_model_name = st.selectbox(
+                    "🧠 Выберите модель ИИ:", 
+                    available_models, 
+                    index=default_index
+                )
+                st.success("✅ Ключ активен")
             else:
                 st.error("По этому ключу нет доступных моделей.")
         except Exception as e:
-            st.error(f"Ошибка проверки ключа: Проверьте правильность ввода.")
+            st.error(f"Ошибка: Проверьте API-ключ.")
             
     st.divider()
-    st.info("💡 **Мультимодальный анализ:** ИИ читает состав прямо с фото (можно загрузить несколько фото одной банки). ")
+    st.info("💡 **Мультимодальный анализ:** ИИ читает состав прямо с фото (можно загрузить несколько фото одной банки).")
 
 # === ФУНКЦИЯ АНАЛИЗА (МОЗГ ИИ) ===
 def analyze_images_multimodal(images_data, api_key, model_name, user_context):
