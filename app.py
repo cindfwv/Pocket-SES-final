@@ -4,11 +4,19 @@ import google.generativeai as genai
 # --- НАСТРОЙКИ СТРАНИЦЫ И CSS ---
 # Устанавливаем иконку и широкую верстку
 st.set_page_config(
-    page_title="Pocket-СЭС | AI-Nutrition",
-    page_icon="🍏",
+    page_title="Pocket-СЭС", 
+    page_icon="🔬", 
     layout="wide"
 )
 
+# Настройка иконки для мобильного экрана (iPhone/Android)
+st.markdown(
+    """
+    <link rel="apple-touch-icon" sizes="180x180" href="https://em-content.zobj.net/source/apple/354/microscope_1f52c.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://em-content.zobj.net/source/apple/354/microscope_1f52c.png">
+    """,
+    unsafe_allow_html=True
+)
 # Добавляем кастомный CSS (стили)
 st.markdown("""
 <style>
