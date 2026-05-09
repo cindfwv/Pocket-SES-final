@@ -188,7 +188,7 @@ def analyze_images_multimodal(images_data, api_key, model_name, user_context):
         return f"❌ Ошибка при генерации ответа: {e}"
 
 # === ИНТЕРФЕЙС ПРИЛОЖЕНИЯ ===
-st.title("🍏 Pocket-СЭС")
+st.title("🔬 Pocket-СЭС")
 st.markdown("**Персональный AI-детектор пищевой безопасности**")
 
 # Создаем три вкладки
